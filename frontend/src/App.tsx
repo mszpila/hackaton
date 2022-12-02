@@ -24,42 +24,20 @@ function App() {
   const [selectedView, setSelectedView] = useState("MainInterface")
 
   return (
-    <ZHeader/>
-    <Meals/>
+    // <ZHeader/>
+    // <Meals/>
 
-    <LeftBar/>
+    // <LeftBar/>
   
-    <div className='App'>
+<div className='App'>
                 
       <Header setSelectedView={setSelectedView}/>   
     
       <SideBar />
-
-  return (
-
-    <div className='App'>
-                  
-       
-
-    
-      <Header />
-      
-    
-      <SideBar />
-    
-      
-    
-      <MainInterface />
-      
-
-      
-    
-    
-      
-        
-
-
-      
+ 
+      {selectedView === "MainInterface" ? 
+          <MainInterface/> : <Health />}
+   
     </div>
 
   );
