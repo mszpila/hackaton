@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BunyanLoggerModule } from 'nestjs-bunyan';
+import { FoodController } from './food/infrastructure/api/FoodController';
 import { IAMApplicationService } from './iam/application/IAMApplicationService';
 import { UserApplicationService } from './iam/application/UserApplicationService';
 import { TokenFactory } from './iam/domain/token/TokenFactory';
@@ -35,6 +36,9 @@ import { establishMongoDbConnection, MongoDbConnection } from './shared/infrastr
     // iam
     IAMController,
     UserController,
+
+    // food
+    FoodController,
   ],
 
   providers: [
