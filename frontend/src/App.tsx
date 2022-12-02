@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 //import { Col, Divider, Row } from 'antd';
 
@@ -11,32 +11,56 @@ import './App.css';
 import Header from './Components/Header';
 import MainInterface from './Components/MainInterface';
 import SideBar from './Components/SideBar';
-import Meals from  './Components/ZMeals';
-import LeftBar from './Components/ZLeftBar';
-import ZHeader from './Components/ZHeader';
+import Health from './Components/Health'
+
+//type name1 =  "MainInterface" | "health"
 function App() {
 
+  /* let renderTab = {
+    MainInterface: <MainInterface />,
+    health: <Health />
+  } */
+
+  const [selectedView, setSelectedView] = useState("MainInterface")
+
+  return (
+    <ZHeader/>
+    <Meals/>
+
+    <LeftBar/>
+  
+    <div className='App'>
+                
+      <Header setSelectedView={setSelectedView}/>   
+    
+      <SideBar />
 
   return (
 
     <div className='App'>
-      <ZHeader/>
-      <Meals/>
+                  
+       
 
-      <LeftBar/>
-
-{/*                   
+    
       <Header />
+      
     
       <SideBar />
+    
       
-      <MainInterface /> */}
+    
+      <MainInterface />
+      
+
+      
+    
+    
+      
+        
+
+
       
     </div>
-
-
-
-
 
   );
 }

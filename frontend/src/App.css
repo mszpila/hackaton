@@ -9,7 +9,7 @@
     max-width: 100vw;
     /* overflow-x: hidden; */
     flex-wrap: wrap;
-    color: #606060;
+    /* color: #606060; */
     display: flex;
 }
 
