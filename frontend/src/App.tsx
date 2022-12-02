@@ -8,10 +8,10 @@ import './App.css';
 //some changes
 //import { Layout } from 'antd';
 //import { Button } from 'antd';
-import Header from './Components/Header';
+import Header from './Components/Header'
 import MainInterface from './Components/MainInterface';
 import SideBar from './Components/SideBar';
-import Health from './Components/Health'
+import Health from './Components/Health';
 
 //type name1 =  "MainInterface" | "health"
 function App() {
