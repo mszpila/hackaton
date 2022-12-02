@@ -1,0 +1,11 @@
+#header {
+    width: 100vw;
+    background-color: aquamarine;
+    display: flex;
+    
+}
+
+#header h2{
+    margin: 0 2% 0 0;
+}
+

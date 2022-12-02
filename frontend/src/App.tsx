@@ -1,31 +1,42 @@
+import React, { useState } from 'react'
+
+//import { Col, Divider, Row } from 'antd';
 
 import './App.css';
 
+
+//some changes
+//import { Layout } from 'antd';
+//import { Button } from 'antd';
+import Header from './Components/Header';
+import MainInterface from './Components/MainInterface';
+import SideBar from './Components/SideBar';
+import Health from './Components/Health'
+
+//type name1 =  "MainInterface" | "health"
 function App() {
+
+  /* let renderTab = {
+    MainInterface: <MainInterface />,
+    health: <Health />
+  } */
+
+  
+  const [selectedView, setSelectedView] = useState("MainInterface")
+
   return (
+
+
+    <div className='App'>
+                
+      <Header setSelectedView={setSelectedView}/>   
+    
+      <SideBar />
  
-
-    <React.Fragment>
-      <Layout>
-                <div className='App'>
-      <h1>Hello Hackathon</h1>
-        </div>
-      </Layout>
-    
-    
-      <Space wrap>
-        <Button type="primary">Primary Button</Button>
-        <Button>Default Button</Button>
-        <Button type="dashed">Dashed Button</Button>
-
-
-      </Space>
-    
-    </React.Fragment>
-
-
-
-
+      {selectedView === "MainInterface" ? 
+          <MainInterface/> : <Health />}
+   
+    </div>
 
   );
 }
