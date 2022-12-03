@@ -39,6 +39,11 @@ const MainInterface: FC = () => {
       const weeklyPlan = await getWeeklyPlan(token!, currentWeeklyPlan.id);
       setWeeklyPlan(weeklyPlan);
     }
+
+    if (weeklyPlan) {
+      const shoppingList = await getShoppingList(token!, weeklyPlan.id);
+      setShoppingList(shoppingList);
+    }
   };
 
   useEffect(() => {
