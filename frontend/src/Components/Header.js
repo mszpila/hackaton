@@ -1,10 +1,12 @@
 import './Header.css'
 
-function Header() {
+import { Button } from 'antd';
+
+function Header( { setSelectedView } ) {
     return ( 
         <div id="header">
-            <h2>schedule</h2>
-            <h2>Health</h2>
+            <Button onClick = {()=> setSelectedView("MainInterface")}>schedule</Button>
+            <Button onClick = {()=> setSelectedView("Health")}>Health</Button>
         </div>
      );
 }
