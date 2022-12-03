@@ -3,7 +3,7 @@ import { Button, Form, Input } from 'antd';
 import { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ApplicationRoutePaths } from '../ApplicationRoutes';
-import { login, singup } from './api/AuthAPI';
+import { login, signUp } from './api/AuthAPI';
 import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from './styles/LoginFormStyle';
 
 const RegisterPage: FC = () => {
@@ -15,7 +15,7 @@ const RegisterPage: FC = () => {
 
   const validateForm = async (e: any) => {
     e.preventDefault();
-    const registerData = await singup(email, password, firstName, lastName);
+    const registerData = await signUp(email, password, firstName, lastName);
 
     if (registerData.token) {
       localStorage.setItem('x-token', registerData.token);

@@ -14,7 +14,7 @@ export const login = (email: string, password: string) =>
     .notFound(() => message.error('Wrong credentials'))
     .json<ILoginData>();
 
-export const singup = (email: string, password: string, firstName: string, lastName: string) =>
+export const signUp = (email: string, password: string, firstName: string, lastName: string) =>
   apiClient(null)
     .url('/auth/signUp')
     .post({ email, password, firstName, lastName })
