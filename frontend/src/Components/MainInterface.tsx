@@ -20,7 +20,7 @@ dayjs.extend(weekday);
 const MainInterface: FC = () => {
 
   const navigate = useNavigate();
-  const [token] = useState(localStorage.getItem('token'));
+  const [token] = useState(localStorage.getItem('x-token'));
   const [weeklyPlan, setWeeklyPlan] = useState<IWeeklyPlan | null>(null);
   const [shoppingList, setShoppingList] = useState<IShoppingListItem[]>([]);
 
