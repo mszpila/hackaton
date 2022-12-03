@@ -24,7 +24,7 @@ interface ISwapBody {
 
 export const swapRecipe = (token: string, weeklyPlanId: string, body: ISwapBody) =>
   apiClient(token)
-    .url(`/${ weeklyPlanId }/swap`)
+    .url(`/weekly-plans/${ weeklyPlanId }/swap`)
     .post(body)
     .res();
 
@@ -36,7 +36,7 @@ export interface IShoppingListItem {
 
 export const getShoppingList = (token: string, weeklyPlanId: string) =>
   apiClient(token)
-    .url(`/${ weeklyPlanId }/shopping-list`)
+    .url(`/weekly-plans/${ weeklyPlanId }/shopping-list`)
     .get()
     .json<IShoppingListItem[]>();
 
@@ -65,12 +65,12 @@ export interface IWeeklyPlan {
 
 export const getWeeklyPlan = (token: string, weeklyPlanId: string) =>
   apiClient(token)
-    .url(`/${ weeklyPlanId }`)
+    .url(`/weekly-plans/${ weeklyPlanId }`)
     .get()
     .json<IWeeklyPlan>();
 
 export const getCurrentWeeklyPlan = (token: string) =>
   apiClient(token)
-    .url('')
+    .url('/weekly-plans/')
     .get()
     .json<IGeneratedWeeklyPlanID | null>();
