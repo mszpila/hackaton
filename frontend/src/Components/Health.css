@@ -33,3 +33,15 @@
     display: flex;
     justify-content: center;
 }
+
+#continue, #change{
+    display: flex;
+    margin-left: 80%;
+    margin-right: 7%;
+    padding: 1%;
+    
+}
+
+#continue:hover, #change:hover{
+    background-color: grey;
+}
