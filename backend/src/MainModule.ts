@@ -2,7 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BunyanLoggerModule } from 'nestjs-bunyan';
-import { FoodController } from './food/infrastructure/api/FoodController';
+import { WeeklyPlanApplicationService } from './food/application/WeeklyPlanApplicationService';
+import { FoodService } from './food/domain/FoodService';
+import { WeeklyPlanRepository } from './food/domain/weeklyPlan/WeeklyPlanRepository';
+import { WeeklyPlanService } from './food/domain/weeklyPlan/WeeklyPlanService';
+import { WeeklyPlanController } from './food/infrastructure/api/WeeklyPlanController';
+import { MongoDbWeeklyPlanRepository } from './food/infrastructure/repo/MongoDbWeeklyPlanRepository';
+import { DummyFoodService } from './food/infrastructure/services/DummyFoodService';
+import { SpoonacularFoodService } from './food/infrastructure/services/SpoonacularFoodService';
 import { IAMApplicationService } from './iam/application/IAMApplicationService';
 import { UserApplicationService } from './iam/application/UserApplicationService';
 import { TokenFactory } from './iam/domain/token/TokenFactory';
@@ -38,7 +45,7 @@ import { establishMongoDbConnection, MongoDbConnection } from './shared/infrastr
     UserController,
 
     // food
-    FoodController,
+    WeeklyPlanController,
   ],
 
   providers: [
@@ -48,8 +55,16 @@ import { establishMongoDbConnection, MongoDbConnection } from './shared/infrastr
       useFactory: async () => await establishMongoDbConnection({ dbName: process.env.DB_NAME }),
     },
 
+    // app
     IAMApplicationService,
     UserApplicationService,
+    WeeklyPlanApplicationService,
+
+    // domain
+    {
+      provide: FoodService,
+      useClass: process.env.TEST ? DummyFoodService : SpoonacularFoodService,
+    },
 
     { provide: TokenRepository, useClass: process.env.TEST ? InMemoryTokenRepository : MongoDbTokenRepository },
     TokenFactory,
@@ -57,6 +72,12 @@ import { establishMongoDbConnection, MongoDbConnection } from './shared/infrastr
 
     { provide: UserRepository, useClass: process.env.TEST ? InMemoryUserRepository : MongoDbUserRepository },
     { provide: PasswordService, useClass: BcryptPasswordService },
+
+    WeeklyPlanService,
+    {
+      provide: WeeklyPlanRepository,
+      useClass: process.env.TEST ? MongoDbWeeklyPlanRepository : MongoDbWeeklyPlanRepository,
+    },
   ],
 })
 
