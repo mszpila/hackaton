@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import ApplicationRoutes from './ApplicationRoutes';
 import MainInterface from './Components/MainInterface';
-import MainLayout from './Components/MainLayout';
+import MainLayout from './components/MainLayout';
 
 export interface TypeEvents {
   title: string,
