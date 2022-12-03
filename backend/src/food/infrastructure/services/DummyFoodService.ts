@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { DateValue } from '../../../shared';
 import { FoodService } from '../../domain/FoodService';
 import { Recipe, RecipeDietRestriction, RecipeIntolerance, RecipeName } from '../../domain/weeklyPlan/Recipe';
 import { WeeklyPlanCookTimes } from '../../domain/weeklyPlan/WeeklyPlan';
@@ -13,7 +12,7 @@ export class DummyFoodService implements FoodService {
       [],
       [],
       new URL('https://example.com'),
-      new DateValue(new Date()),
+      new Date(),
     )]);
   }
 }

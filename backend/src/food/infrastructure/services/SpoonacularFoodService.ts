@@ -1,5 +1,4 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { DateValue } from '../../../shared';
 import { FoodService } from '../../domain/FoodService';
 import { Recipe, RecipeDietRestriction, RecipeIngredient, RecipeIntolerance, RecipeName } from '../../domain/weeklyPlan/Recipe';
 import { WeeklyPlanCookTimes, WeeklyPlanDays } from '../../domain/weeklyPlan/WeeklyPlan';
@@ -62,7 +61,7 @@ export class SpoonacularFoodService implements FoodService {
         intolerances,
         ingredients,
         new URL(recipe.sourceUrl),
-        dateValues.pop() || new DateValue(new Date()),
+        dateValues.pop() || new Date(),
       );
     });
   }

@@ -19,9 +19,7 @@ import { PasswordService } from './iam/domain/user/PasswordService';
 import { UserRepository } from './iam/domain/user/UserRepository';
 import { IAMController } from './iam/infrastructure/api/IAMController';
 import { UserController } from './iam/infrastructure/api/UserController';
-import { InMemoryTokenRepository } from './iam/infrastructure/repo/token/InMemoryTokenRepository';
 import { MongoDbTokenRepository } from './iam/infrastructure/repo/token/MongoDbTokenRepository';
-import { InMemoryUserRepository } from './iam/infrastructure/repo/user/InMemoryUserRepository';
 import { MongoDbUserRepository } from './iam/infrastructure/repo/user/MongoDbUserRepository';
 import { BcryptPasswordService } from './iam/infrastructure/service/BcryptPasswordService';
 import { establishMongoDbConnection, MongoDbConnection } from './shared/infrastructure/MongoDbConnection';
@@ -66,17 +64,17 @@ import { establishMongoDbConnection, MongoDbConnection } from './shared/infrastr
       useClass: process.env.TEST ? DummyFoodService : SpoonacularFoodService,
     },
 
-    { provide: TokenRepository, useClass: process.env.TEST ? InMemoryTokenRepository : MongoDbTokenRepository },
+    { provide: TokenRepository, useClass: MongoDbTokenRepository },
     TokenFactory,
     TokenService,
 
-    { provide: UserRepository, useClass: process.env.TEST ? InMemoryUserRepository : MongoDbUserRepository },
+    { provide: UserRepository, useClass: MongoDbUserRepository },
     { provide: PasswordService, useClass: BcryptPasswordService },
 
     WeeklyPlanService,
     {
       provide: WeeklyPlanRepository,
-      useClass: process.env.TEST ? MongoDbWeeklyPlanRepository : MongoDbWeeklyPlanRepository,
+      useClass: MongoDbWeeklyPlanRepository,
     },
   ],
 })

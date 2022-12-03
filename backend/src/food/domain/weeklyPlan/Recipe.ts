@@ -1,5 +1,4 @@
 import { UnprocessableEntityException } from '@nestjs/common';
-import { DateValue, Enum } from '../../../shared';
 
 export class RecipeName {
   constructor(
@@ -15,17 +14,15 @@ export class RecipeName {
   }
 }
 
-@Enum.decorate()
-export class RecipeIntolerance extends Enum {
-  public static readonly DAIRY_FREE = new RecipeIntolerance('DAIRY_FREE');
-  public static readonly GLUTEN_FREE = new RecipeIntolerance('GLUTEN_FREE');
+export enum RecipeIntolerance {
+  DAIRY_FREE = 'DAIRY_FREE',
+  GLUTEN_FREE = 'GLUTEN_FREE',
 }
 
-@Enum.decorate()
-export class RecipeDietRestriction extends Enum {
-  public static readonly KETOGENIC = new RecipeDietRestriction('KETOGENIC');
-  public static readonly VEGAN = new RecipeDietRestriction('VEGAN');
-  public static readonly VEGETARIAN = new RecipeDietRestriction('VEGETARIAN');
+export enum RecipeDietRestriction {
+  KETOGENIC = 'KETOGENIC',
+  VEGAN = 'VEGAN',
+  VEGETARIAN = 'VEGETARIAN',
 }
 
 export class RecipeIngredient {
@@ -60,7 +57,7 @@ export class Recipe {
     private intolerances: RecipeIntolerance[],
     private ingredients: RecipeIngredient[],
     private instructionURL: URL,
-    private date: DateValue,
+    private date: Date,
   ) {
   }
 
@@ -84,7 +81,7 @@ export class Recipe {
     return this.instructionURL;
   }
 
-  public getDate(): DateValue {
+  public getDate(): Date {
     return this.date;
   }
 }
