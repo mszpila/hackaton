@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './MainInterface.css';
-import { Button, Checkbox, Col, Collapse, DatePicker, Form, Input, InputNumber, List, message, Modal, Row, Space, TimePicker, Typography } from 'antd';
+import { Button, Checkbox, Col, Collapse, DatePicker, Divider, Form, Input, InputNumber, List, message, Modal, Row, Space, TimePicker, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -47,13 +47,15 @@ const MainInterface: FC = () => {
 
   };
 
-  useEffect(() => {
-    if (!token) {
-      return navigate(ApplicationRoutePaths.LOGIN);
-    }
+  //hidden login
 
-    fetchData(token);
-  }, []);
+  // useEffect(() => {
+  //   if (!token) {
+  //     return navigate(ApplicationRoutePaths.LOGIN);
+  //   }
+
+  //   fetchData(token);
+  // }, []);
 
   // const handleOk = () => {
   //   setModalText('The modal will be closed after two seconds');
@@ -141,89 +143,95 @@ const MainInterface: FC = () => {
   };
 
   return (
-    <Row style={ { height: '100%' } }>
-      <Col span={ 18 }>
+    <Row style={{ height: '100%' }}>
+      <Col span={18}>
         <div id='main-interface'>
           <FullCalendar
-            height={ '100%' }
-            plugins={ [dayGridPlugin, timeGridPlugin, interactionPlugin] }
+            height={'100%'}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView='timeGridWeek'
-            events={ weeklyPlan ? weeklyPlan.recipes : [] }
-            // headerToolbar={ { center: 'timeGridWeek' } }
+            events={weeklyPlan ? weeklyPlan.recipes : []}
+          // headerToolbar={ { center: 'timeGridWeek' } }
           />
         </div>
       </Col>
-      <Col span={ 6 }>
-        { shoppingList.length ? <List
-          header={ <div>Shopping list</div> }
+      <Col span={6}>
+        {shoppingList.length ? <List
+          header={<div>Shopping list</div>}
           // footer={<div>Footer</div>}
           bordered
-          dataSource={ shoppingList }
-          renderItem={ (item) => (
+          dataSource={shoppingList}
+          renderItem={(item) => (
             <List.Item>
               <>
-                <Typography.Text mark>{ item.name } { item.amount } { item.unit }</Typography.Text>
+                <Typography.Text mark>{item.name} {item.amount} {item.unit}</Typography.Text>
               </>
             </List.Item>
-          ) }
+          )}
         /> : <>
-          <Button type='primary' onClick={ showModal }>Add meals</Button>
+          <Button type='primary' onClick={showModal}>Add meals</Button>
           <Modal
             title='Generate meals'
-            open={ open }
+            open={open}
             // onOk={ handleOk }
-            confirmLoading={ confirmLoading }
-            onCancel={ handleCancel }
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
           >
             <Form
               name='normal_login'
               className='login-form'
-              initialValues={ {
+              initialValues={{
                 remember: true,
-              } }
-              style={ LoginFormStyle }
+              }}
+              style={LoginFormStyle}
             >
-              <Typography.Text>How many meals do you want to generate?</Typography.Text>
-              <InputNumber min={ 1 } max={ 14 } onChange={ setMealAmountOnChange } />
+              <Typography.Text className='larger_text'>How many meals do you want to generate?</Typography.Text>
+              <InputNumber min={1} max={14} onChange={setMealAmountOnChange} />
 
-              <Typography.Text>How many servings?</Typography.Text>
-              <InputNumber min={ 1 } max={ 4 } />
+              <Typography.Text className='larger_text'>How many servings?</Typography.Text>
+              <InputNumber min={1} max={4} />
 
-              <Typography.Text>Diet restrictions</Typography.Text>
-              <Checkbox onChange={ setVeganOnChange }>Vegan</Checkbox>
-              <Checkbox onChange={ setVegetarianOnChange }>Vegetarian</Checkbox>
-              <Checkbox onChange={ setKetogenicOnChange }>Ketogenic</Checkbox>
+              <Typography.Text className='larger_text'>Diet restrictions</Typography.Text>
+              <Space split={<Divider type="horizontal" />}>
+                <Checkbox onChange={setVeganOnChange}>Vegan</Checkbox>
+                <Checkbox onChange={setVegetarianOnChange}>Vegetarian</Checkbox>
+                <Checkbox onChange={setKetogenicOnChange}>Ketogenic</Checkbox>
+              </Space>
 
-              <Typography.Text>Intolerances</Typography.Text>
-              <Checkbox onChange={ setDairyFreeOnChange }>Diary free</Checkbox>
-              <Checkbox onChange={ setGlutenFreeOnChange }>Gluten free</Checkbox>
 
-              <Collapse>
+              <Typography.Text className='larger_text'>Intolerances</Typography.Text>
+              <Space split={<Divider type="horizontal" />}>
+                <Checkbox onChange={setDairyFreeOnChange}>Diary free</Checkbox>
+                <Checkbox onChange={setGlutenFreeOnChange}>Gluten free</Checkbox>
+              </Space>
+
+              <Collapse className='wider'>
                 <Collapse.Panel header='Monday' key='1'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 1) } />
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 1)} />
                 </Collapse.Panel>
                 <Collapse.Panel header='Tuesday' key='2'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 2) } />
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 2)} />
                 </Collapse.Panel>
-                <Collapse.Panel header='Wednesday' key='3'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 3) } />
+                <Collapse.Panel className='wider' header='Wednesday' key='3'>
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 3)} />
                 </Collapse.Panel>
                 <Collapse.Panel header='Thursday' key='4'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 4) } />
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 4)} />
                 </Collapse.Panel>
                 <Collapse.Panel header='Friday' key='5'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 5) } />
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 5)} />
                 </Collapse.Panel>
                 <Collapse.Panel header='Saturday' key='6'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 6) } />
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 6)} />
                 </Collapse.Panel>
                 <Collapse.Panel header='Sunday' key='7'>
-                  <TimePicker onChange={ (time) => time && addDate(time, 0) } />
+                  <TimePicker className='wider' onChange={(time) => time && addDate(time, 0)} />
                 </Collapse.Panel>
               </Collapse>
 
               <Form.Item>
-                <Button style={ LoginButtonStyle } type='primary' onClick={ generateMeals }>Generate meals</Button>
+                <br />
+                <Button style={LoginButtonStyle} type='primary' onClick={generateMeals}>Generate meals</Button>
               </Form.Item>
             </Form>
           </Modal>
