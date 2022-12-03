@@ -21,13 +21,15 @@ function App() {
     health: <Health />
   } */
 
-  
   const [selectedView, setSelectedView] = useState("MainInterface")
 
   return (
+    // <ZHeader/>
+    // <Meals/>
 
-
-    <div className='App'>
+    // <LeftBar/>
+  
+<div className='App'>
                 
       <Header setSelectedView={setSelectedView}/>   
     
