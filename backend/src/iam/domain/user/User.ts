@@ -1,15 +1,14 @@
 import { UnprocessableEntityException } from '@nestjs/common';
-import { Entity, Enum, Identifier } from '../../../shared';
+import { Entity, Identifier } from '../../../shared';
 
 import { UserSnapshot } from './UserSnapshot';
 
 export class UserID extends Identifier {
 }
 
-@Enum.decorate()
-export class UserRole extends Enum {
-  public static readonly USER = new UserRole('USER');
-  public static readonly ADMIN = new UserRole('ADMIN');
+export enum UserRole {
+  USER = 'USER',
+  ADMIN = 'ADMIN'
 }
 
 export class UserEmail {
@@ -72,15 +71,15 @@ export class User extends Entity<UserID, UserSnapshot> {
   }
 
   public isAdmin(): boolean {
-    return !!this.roles.find(role => role.equals(UserRole.ADMIN));
+    return !!this.roles.find(role => role.toString() === UserRole.ADMIN.toString());
   }
 
   public isUser(): boolean {
-    return !!this.roles.find(role => role.equals(UserRole.USER));
+    return !!this.roles.find(role => role.toString() === UserRole.USER.toString());
   }
 
   public hasRole(userRole: UserRole): boolean {
-    return !!this.roles.find(role => role.equals(userRole));
+    return !!this.roles.find(role => role.toString() === userRole.toString());
   }
 
   public getHashedPassword(): UserPassword {

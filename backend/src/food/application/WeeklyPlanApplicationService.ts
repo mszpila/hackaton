@@ -2,7 +2,6 @@ import { IsArray, IsNumber, IsString } from '@nestjs/class-validator';
 import { Injectable } from '@nestjs/common';
 import { TokenID } from '../../iam/domain/token/Token';
 import { TokenService } from '../../iam/domain/token/TokenService';
-import { DateValue } from '../../shared';
 import { RecipeDietRestriction, RecipeIntolerance, RecipeName } from '../domain/weeklyPlan/Recipe';
 import { ShoppingListItem, WeeklyPlan, WeeklyPlanCookTimes, WeeklyPlanDays, WeeklyPlanID, WeeklyPlanPeopleNumber } from '../domain/weeklyPlan/WeeklyPlan';
 import { WeeklyPlanRepository } from '../domain/weeklyPlan/WeeklyPlanRepository';
@@ -77,11 +76,11 @@ export class WeeklyPlanApplicationService {
   public async generateRecipes(command: GenerateWeeklyPlanCommand): Promise<IGeneratedWeeklyPlanID> {
     const user = await this.tokenService.getUser(new TokenID(command.token), null);
 
-    const diets = command.diets.map(diet => new RecipeDietRestriction(diet));
-    const intolerances = command.intolerances.map(intolerance => new RecipeIntolerance(intolerance));
+    const diets = command.diets as RecipeDietRestriction[];
+    const intolerances = command.intolerances as RecipeIntolerance[];
     const cookTimes = new WeeklyPlanCookTimes(command.mealsNumber);
     const peopleNumber = new WeeklyPlanPeopleNumber(command.peopleNumber);
-    const dates = new WeeklyPlanDays(command.dates.map(date => new DateValue(date)));
+    const dates = new WeeklyPlanDays(command.dates.map(date => new Date(date)));
 
     const weeklyPlan = await this.weeklyPlanService.createWeeklyPlan(
       user.id,

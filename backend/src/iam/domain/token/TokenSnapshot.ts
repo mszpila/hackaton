@@ -1,4 +1,3 @@
-import { DateValue } from '../../../shared';
 import { UserID } from '../user/User';
 import { Token, TokenID } from './Token';
 
@@ -14,7 +13,7 @@ export class TokenSnapshot {
     return new Token(
       new TokenID(snapshot.id),
       new UserID(snapshot.user),
-      new DateValue(snapshot.expireDate),
+      snapshot.expireDate ? new Date(snapshot.expireDate) : null,
     );
   }
 }

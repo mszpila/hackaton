@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { Connection, Document, Schema } from 'mongoose';
+import { Connection, Document, Model, Schema } from 'mongoose';
 import { MongoDbConnection } from '../../../../shared/infrastructure/MongoDbConnection';
-import { MongoDbModelProxy } from '../../../../shared/infrastructure/MongoDbModelProxy';
 import { MongoDbTranslator } from '../../../../shared/infrastructure/MongoDbTranslator';
 import { User, UserEmail, UserID, Username, UserPassword, UserRole } from '../../../domain/user/User';
 import { UserRepository } from '../../../domain/user/UserRepository';
@@ -13,8 +12,9 @@ interface IUserModel extends Document, UserSnapshot {
 }
 
 export class MongoDbUserRepository implements UserRepository {
-  private readonly model: MongoDbModelProxy<IUserModel, UserSnapshot, UserID, User>;
+  private readonly model: Model<IUserModel>;
   private readonly collectionName = 'users';
+  private readonly translator = new UserTranslator();
 
   constructor(
     @Inject(MongoDbConnection) private readonly db: Connection,
@@ -30,28 +30,49 @@ export class MongoDbUserRepository implements UserRepository {
       roles: [Schema.Types.String],
     }, { versionKey: 'version' });
 
-    const model = this.db.model('User', userSchema, this.collectionName);
-    this.model = new MongoDbModelProxy(model, new UserTranslator());
+    this.model = this.db.model('User', userSchema, this.collectionName);
   }
 
   public async get(userId: UserID): Promise<User | null> {
-    return this.model.findById(userId.toObjectID());
+    const user = await this.model.findById(userId.toObjectID());
+
+    if (!user) {
+      return null;
+    }
+
+    return this.translator.toEntity(user);
   }
 
   public async save(user: User): Promise<void> {
-    await this.model.save(user);
+    await this.model.updateOne(
+      { _id: user.id.toObjectID() },
+      { ...user.toSnapshot() },
+      { upsert: true },
+    );
   }
 
-  public findByEmail(email: UserEmail): Promise<User | null> {
-    return this.model.findOne({
+  public async findByEmail(email: UserEmail): Promise<User | null> {
+    const user = await this.model.findOne({
       email: email.toString(),
     });
+
+    if (!user) {
+      return null;
+    }
+
+    return this.translator.toEntity(user);
   }
 
-  public findByUsername(username: Username): Promise<User | null> {
-    return this.model.findOne({
+  public async findByUsername(username: Username): Promise<User | null> {
+    const user = await this.model.findOne({
       username: username.toString(),
     });
+
+    if (!user) {
+      return null;
+    }
+
+    return this.translator.toEntity(user);
   }
 }
 
@@ -62,7 +83,7 @@ class UserTranslator implements MongoDbTranslator<User, UserSnapshot> {
       new Username(plainObject.username),
       new UserEmail(plainObject.email),
       new UserPassword(plainObject.password),
-      plainObject.roles.map(role => new UserRole(role)),
+      plainObject.roles as UserRole[],
     );
   }
 

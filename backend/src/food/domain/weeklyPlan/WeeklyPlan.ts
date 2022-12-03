@@ -1,6 +1,6 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { UserID } from '../../../iam/domain/user/User';
-import { DateValue, Entity, Identifier } from '../../../shared';
+import { Entity, Identifier } from '../../../shared';
 import { Recipe, RecipeName } from './Recipe';
 import { WeeklyPlanSnapshot } from './WeeklyPlanSnapshot';
 
@@ -45,7 +45,7 @@ export class WeeklyPlanPeopleNumber {
 
 export class WeeklyPlanDays {
   constructor(
-    private readonly dates: DateValue[],
+    private readonly dates: Date[],
   ) {
     if (dates.length < 1) {
       throw new UnprocessableEntityException('Number of dates cannot be lower than 1');
@@ -56,7 +56,7 @@ export class WeeklyPlanDays {
     }
   }
 
-  public getDates(): DateValue[] {
+  public getDates(): Date[] {
     return this.dates;
   }
 

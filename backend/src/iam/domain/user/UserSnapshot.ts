@@ -16,7 +16,7 @@ export class UserSnapshot {
       new Username(snapshot.username),
       new UserEmail(snapshot.email),
       new UserPassword(snapshot.password),
-      snapshot.roles.map(role => new UserRole(role)),
+      snapshot.roles as UserRole[],
     );
   }
 }

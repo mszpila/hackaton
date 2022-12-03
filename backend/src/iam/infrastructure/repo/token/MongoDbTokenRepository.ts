@@ -1,8 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { Connection, Document, Schema } from 'mongoose';
-import { DateValue } from '../../../../shared';
+import { Connection, Document, Model, Schema } from 'mongoose';
 import { MongoDbConnection } from '../../../../shared/infrastructure/MongoDbConnection';
-import { MongoDbModelProxy } from '../../../../shared/infrastructure/MongoDbModelProxy';
 import { MongoDbTranslator } from '../../../../shared/infrastructure/MongoDbTranslator';
 import { Token, TokenID } from '../../../domain/token/Token';
 import { TokenRepository } from '../../../domain/token/TokenRepository';
@@ -14,8 +12,9 @@ interface ITokenModel extends Document, TokenSnapshot {
 }
 
 export class MongoDbTokenRepository implements TokenRepository {
-  private readonly model: MongoDbModelProxy<ITokenModel, TokenSnapshot, TokenID, Token>;
+  private readonly model: Model<ITokenModel>;
   private readonly collectionName = 'tokens';
+  private readonly translator = new TokenTranslator();
 
   constructor(
     @Inject(MongoDbConnection) private readonly db: Connection,
@@ -29,16 +28,25 @@ export class MongoDbTokenRepository implements TokenRepository {
       expireDate: Schema.Types.Date,
     }, { versionKey: false });
 
-    const model = this.db.model('Token', tokenSchema, this.collectionName);
-    this.model = new MongoDbModelProxy(model, new TokenTranslator());
+    this.model = this.db.model('Token', tokenSchema, this.collectionName);
   }
 
   public async get(tokenId: TokenID): Promise<Token | null> {
-    return this.model.findById(tokenId.toObjectID());
+    const token = await this.model.findById(tokenId.toObjectID());
+
+    if (!token) {
+      return null;
+    }
+
+    return this.translator.toEntity(token);
   }
 
   public async save(token: Token): Promise<void> {
-    return this.model.save(token);
+    await this.model.updateOne(
+      { _id: token.id.toObjectID() },
+      { ...token.toSnapshot() },
+      { upsert: true },
+    );
   }
 }
 
@@ -47,7 +55,7 @@ class TokenTranslator implements MongoDbTranslator<Token, TokenSnapshot> {
     return new Token(
       new TokenID(plainObject._id),
       new UserID(plainObject.user),
-      new DateValue(plainObject.expireDate),
+      plainObject.expireDate ? new Date(plainObject.expireDate) : null,
     );
   }
 
