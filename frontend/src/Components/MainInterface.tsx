@@ -3,7 +3,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './MainInterface.css';
-import { FC, useEffect, useState } from 'react';
+
+import { FC, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { TypeEvents } from '../App';
 import { ApplicationRoutePaths } from '../ApplicationRoutes';

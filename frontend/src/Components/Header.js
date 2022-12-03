@@ -1,14 +1,18 @@
-import './Header.css'
+import './Header.css';
 
 import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { ApplicationRoutePaths } from '../ApplicationRoutes';
 
-function Header( { setSelectedView } ) {
-    return ( 
-        <div id="header">
-            <Button onClick = {()=> setSelectedView("MainInterface")}>schedule</Button>
-            <Button onClick = {()=> setSelectedView("Health")}>Health</Button>
-        </div>
-     );
+function Header() {
+  const navigate = useNavigate();
+
+  return (
+    <div id='header'>
+      <Button onClick={() => navigate(ApplicationRoutePaths.HOME)}>schedule</Button>
+      <Button onClick={() => navigate(ApplicationRoutePaths.HEALTH)}>Health</Button>
+    </div>
+  );
 }
 
 export default Header;

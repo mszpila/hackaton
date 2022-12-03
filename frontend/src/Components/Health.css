@@ -1,6 +1,6 @@
-#health {
-    display:flex;
-    flex-direction: row;
+#zheader{
+    display: flex;
+    justify-content: center;
 }
 
 #continue, #change{
@@ -8,6 +8,22 @@
     margin-left: 80%;
     margin-right: 7%;
     padding: 1%;
+}
+
+#input-questions{
+    display: flex;
+    justify-content: center;
+}
+
+#input{
+    
+    justify-content: center;
+    
+}
+
+#questions{
+    
+    justify-content: center;
     
 }
 
@@ -25,4 +41,8 @@
 
 #continue:hover, #change:hover{
     background-color: grey;
+}
+.ant-btn{
+    display: flex;
+    justify-content: center;
 }
