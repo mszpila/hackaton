@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hackaton/static/css/main.979e7a5f.css",
+    "main.js": "/hackaton/static/js/main.e3938ca9.js",
+    "static/js/787.cda612ba.chunk.js": "/hackaton/static/js/787.cda612ba.chunk.js",
+    "index.html": "/hackaton/index.html",
+    "main.979e7a5f.css.map": "/hackaton/static/css/main.979e7a5f.css.map",
+    "main.e3938ca9.js.map": "/hackaton/static/js/main.e3938ca9.js.map",
+    "787.cda612ba.chunk.js.map": "/hackaton/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.979e7a5f.css",
+    "static/js/main.e3938ca9.js"
+  ]
+}
