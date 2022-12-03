@@ -7,6 +7,7 @@ import ApplicationRoutes, { ApplicationRoutePaths } from '../ApplicationRoutes';
 import { login } from './api/AuthAPI';
 import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from './styles/LoginFormStyle';
 
+
 const LoginPage: FC = () => {
   const navigate = useNavigate();
   const [email, setUsername] = useState('');
@@ -45,7 +46,13 @@ const LoginPage: FC = () => {
       } }
       style={ LoginFormStyle }
     >
-      <Form.Item style={ LoginInputStyle } name='email'
+      {/* some breaks */}
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <Form.Item className='center' style={ LoginInputStyle } name='email'
                  rules={ [{ required: true, message: 'Please input email', type: 'email' }] }>
         <Input onChange={ onChangeSetUsername } prefix={ <UserOutlined className='site-form-item-icon' /> }
                placeholder='Email' />
@@ -63,6 +70,8 @@ const LoginPage: FC = () => {
 
       <Form.Item>
         <Button style={ LoginButtonStyle } onClick={ (e) => validateForm(e) } type='primary'>Login</Button>
+        <br/>
+        <br/>
         <Button style={ LoginButtonStyle } onClick={ navigateToRegister }>Register</Button>
       </Form.Item>
     </Form>
