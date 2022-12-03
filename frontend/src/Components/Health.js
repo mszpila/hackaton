@@ -1,13 +1,18 @@
 import './Health.css'
 
-import ZMeals from './ZOptions';
+import ZOptions from './ZOptions';
 import ZHeader from './ZHeader';
+import ZQuestion from './ZQuestion';
 
 function Health() {
     return ( 
          <div >
             <ZHeader/>
-            <ZMeals/>
+            <div>
+               <ZQuestion/>
+               <ZOptions/>
+            </div>
+
          </div>
 
 
