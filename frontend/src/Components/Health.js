@@ -10,17 +10,17 @@ import SelectedMeals from './SelectedMeals';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 
-function Health( {setEvents} ) {
-    const [filters, setFilters] = useState({veganSelected: false, glutenFreeSelected: false, lactoseSelected: false})
-    const [numberTypesMeals, setNumberTypesMeals] = useState(1);
-    const [mealsSelected, setMealsSelected] = useState(false);
-    const [meals, setMeals] = useState(new Array(numberTypesMeals).fill([]));
+function Health() {
+  const [filters, setFilters] = useState({ veganSelected: false, glutenFreeSelected: false, lactoseSelected: false });
+  const [numberTypesMeals, setNumberTypesMeals] = useState(1);
+  const [mealsSelected, setMealsSelected] = useState(false);
+  const [meals, setMeals] = useState(new Array(numberTypesMeals).fill([]));
 
 
-    return ( 
-        <div id="health">
-            {
-                !mealsSelected ?
+  return (
+    <div id='health'>
+      {
+        !mealsSelected ?
                 <>
                 <div id="zheader">
                 <h2>Shop Once a week !</h2>
