@@ -49,13 +49,13 @@ const MainInterface: FC = () => {
 
   //hidden login
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     return navigate(ApplicationRoutePaths.LOGIN);
-  //   }
+  useEffect(() => {
+    if (!token) {
+      return navigate(ApplicationRoutePaths.LOGIN);
+    }
 
-  //   fetchData(token);
-  // }, []);
+    fetchData(token);
+  }, []);
 
   // const handleOk = () => {
   //   setModalText('The modal will be closed after two seconds');
