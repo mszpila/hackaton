@@ -9,17 +9,17 @@ import MealPrep from './MealPrep';
 import SelectedMeals from './SelectedMeals';
 
 
-function Health( {setEvents} ) {
-    const [filters, setFilters] = useState({veganSelected: false, glutenFreeSelected: false, lactoseSelected: false})
-    const [numberOfCooking, setNumberOfCooking] = useState(1);
-    const [mealsSelected, setMealsSelected] = useState(false);
-    
-    return ( 
-        <div id="health">
-            {
-                !mealsSelected ?
-                <>
-                <div id="zheader">
+function Health() {
+  const [filters, setFilters] = useState({ veganSelected: false, glutenFreeSelected: false, lactoseSelected: false });
+  const [numberOfCooking, setNumberOfCooking] = useState(1);
+  const [mealsSelected, setMealsSelected] = useState(false);
+
+  return (
+    <div id='health'>
+      {
+        !mealsSelected ?
+          <>
+            <div id='zheader'>
                 <h2>Shop Once a week !</h2>
                 <br></br>
             </div>
