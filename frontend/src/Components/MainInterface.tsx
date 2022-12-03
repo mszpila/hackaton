@@ -1,19 +1,17 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import './MainInterface.css';
-import { Button, Checkbox, Col, Collapse, DatePicker, Divider, Form, Input, InputNumber, List, message, Modal, Row, Space, TimePicker, Typography } from 'antd';
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { Button, Checkbox, Col, Collapse, Divider, Form, InputNumber, List, Modal, Row, Space, TimePicker, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TypeEvents } from '../App';
-import { ApplicationRoutePaths } from '../ApplicationRoutes';
-import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from '../auth/styles/LoginFormStyle';
 import dayjs, { Dayjs } from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
+import { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ApplicationRoutePaths } from '../ApplicationRoutes';
+import { LoginButtonStyle, LoginFormStyle } from '../auth/styles/LoginFormStyle';
 import { generateWeeklyPlan, getCurrentWeeklyPlan, getShoppingList, getWeeklyPlan, IShoppingListItem, IWeeklyPlan } from './api/WeeklyPlanAPI';
+import './MainInterface.css';
 
 dayjs.extend(weekday);
 
@@ -49,13 +47,13 @@ const MainInterface: FC = () => {
 
   //hidden login
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     return navigate(ApplicationRoutePaths.LOGIN);
-  //   }
+  useEffect(() => {
+    if (!token) {
+      return navigate(ApplicationRoutePaths.LOGIN);
+    }
 
-  //   fetchData(token);
-  // }, []);
+    fetchData(token);
+  }, []);
 
   // const handleOk = () => {
   //   setModalText('The modal will be closed after two seconds');
