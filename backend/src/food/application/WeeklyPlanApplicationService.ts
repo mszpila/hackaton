@@ -6,6 +6,7 @@ import { DateValue } from '../../shared';
 import { RecipeDietRestriction, RecipeIntolerance, RecipeName } from '../domain/weeklyPlan/Recipe';
 import { ShoppingListItem, WeeklyPlan, WeeklyPlanCookTimes, WeeklyPlanDays, WeeklyPlanID, WeeklyPlanPeopleNumber } from '../domain/weeklyPlan/WeeklyPlan';
 import { WeeklyPlanService } from '../domain/weeklyPlan/WeeklyPlanService';
+import { IRecipe } from '../domain/weeklyPlan/WeeklyPlanSnapshot';
 
 export class TokenCommand {
   @IsString()
@@ -46,8 +47,20 @@ export class GetWeeklyPlanCommand extends TokenCommand {
 }
 
 export class WeeklyPlanDTO {
+  public readonly id: string;
+  public readonly user: string;
+  public readonly recipes: IRecipe[];
+  public readonly mealsNumber: number;
+  public readonly peopleNumber: number;
+
   constructor(weeklyPlan: WeeklyPlan) {
     const snap = weeklyPlan.toSnapshot();
+
+    this.id = snap.id;
+    this.user = snap.user;
+    this.recipes = snap.recipes;
+    this.mealsNumber = snap.cookTimes;
+    this.peopleNumber = snap.peopleNumber;
   }
 }
 
