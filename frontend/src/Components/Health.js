@@ -1,9 +1,9 @@
 import './Health.css'
 
-function Health() {
+function Health( {setEvents} ) {
     return ( 
         <div id="health">
-
+            
         </div>
      );
 }
