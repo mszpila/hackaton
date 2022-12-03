@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { WeeklyPlanApplicationService, IGeneratedWeeklyPlanID, WeeklyPlanDTO } from '../../application/WeeklyPlanApplicationService';
+import { ShoppingListItem } from '../../domain/weeklyPlan/WeeklyPlan';
 
 @Controller('/weekly-plans')
 export class WeeklyPlanController {
@@ -29,6 +30,17 @@ export class WeeklyPlanController {
       token,
       weeklyPlan,
       ...body,
+    });
+  }
+
+  @Get('/:weeklyPlan/shopping-list')
+  public async getShoppingList(
+    @Headers('x-token') token: string,
+    @Param('weeklyPlan') weeklyPlan: string,
+  ): Promise<ShoppingListItem[]> {
+    return this.foodApplicationService.getShoppingList({
+      token,
+      weeklyPlan,
     });
   }
 

@@ -4,7 +4,7 @@ import { TokenID } from '../../iam/domain/token/Token';
 import { TokenService } from '../../iam/domain/token/TokenService';
 import { DateValue } from '../../shared';
 import { RecipeDietRestriction, RecipeIntolerance, RecipeName } from '../domain/weeklyPlan/Recipe';
-import { WeeklyPlan, WeeklyPlanCookTimes, WeeklyPlanDays, WeeklyPlanID, WeeklyPlanPeopleNumber } from '../domain/weeklyPlan/WeeklyPlan';
+import { ShoppingListItem, WeeklyPlan, WeeklyPlanCookTimes, WeeklyPlanDays, WeeklyPlanID, WeeklyPlanPeopleNumber } from '../domain/weeklyPlan/WeeklyPlan';
 import { WeeklyPlanService } from '../domain/weeklyPlan/WeeklyPlanService';
 
 export class TokenCommand {
@@ -92,6 +92,13 @@ export class WeeklyPlanApplicationService {
     const weeklyPlan = await this.weeklyPlanService.getWeeklyPlan(new WeeklyPlanID(command.weeklyPlan), user.id);
 
     return new WeeklyPlanDTO(weeklyPlan);
+  }
+
+  public async getShoppingList(command: GetWeeklyPlanCommand): Promise<ShoppingListItem[]> {
+    const user = await this.tokenService.getUser(new TokenID(command.token), null);
+    const weeklyPlan = await this.weeklyPlanService.getWeeklyPlan(new WeeklyPlanID(command.weeklyPlan), user.id);
+
+    return weeklyPlan.getShoppingList();
   }
 }
 
