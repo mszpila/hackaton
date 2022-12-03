@@ -56,7 +56,7 @@ const LoginPage: FC = () => {
       {/*</Form.Item>*/ }
 
       <Form.Item>
-        <Button style={ LoginButtonStyle } onClick={ validateForm } type='primary'>Log in</Button>
+        <Button style={ LoginButtonStyle } onClick={ validateForm } type='primary'>Login</Button>
       </Form.Item>
     </Form>
   </>;

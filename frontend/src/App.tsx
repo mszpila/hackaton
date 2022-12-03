@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import './App.css';
 import { BrowserRouter } from 'react-router-dom';
+import './App.css';
 import ApplicationRoutes from './ApplicationRoutes';
-import Header from './Components/Header';
-import Health from './Components/Health';
 import MainInterface from './Components/MainInterface';
 import MainLayout from './components/MainLayout';
 
