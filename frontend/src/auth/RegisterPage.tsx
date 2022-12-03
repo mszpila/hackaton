@@ -68,13 +68,13 @@ const RegisterPage: FC = () => {
 
       <Form.Item style={ LoginInputStyle } name='firstName'
                  rules={ [{ required: true, message: 'Please input first name' }] }>
-        <Input onChange={ onChangeSetEmail } prefix={ <UserOutlined className='site-form-item-icon' /> }
+        <Input onChange={ onChangeSetFirstName } prefix={ <UserOutlined className='site-form-item-icon' /> }
                placeholder='First name' />
       </Form.Item>
 
       <Form.Item style={ LoginInputStyle } name='lastName'
                  rules={ [{ required: true, message: 'Please input last name' }] }>
-        <Input onChange={ onChangeSetEmail } prefix={ <UserOutlined className='site-form-item-icon' /> }
+        <Input onChange={ onChangeSetLastName } prefix={ <UserOutlined className='site-form-item-icon' /> }
                placeholder='Last name' />
       </Form.Item>
 
