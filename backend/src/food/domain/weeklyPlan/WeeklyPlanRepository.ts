@@ -7,4 +7,6 @@ export abstract class WeeklyPlanRepository {
   public abstract save(weeklyPlan: WeeklyPlan): Promise<void>;
 
   public abstract get(weeklyPlanId: WeeklyPlanID, userId: UserID): Promise<WeeklyPlan | null>;
+
+  public abstract getCurrent(userId: UserID): Promise<WeeklyPlan | null>;
 }

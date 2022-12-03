@@ -61,6 +61,12 @@ export class MongoDbWeeklyPlanRepository implements WeeklyPlanRepository {
   public async save(weeklyPlan: WeeklyPlan): Promise<void> {
     return this.model.save(weeklyPlan);
   }
+
+  public async getCurrent(userId: UserID): Promise<WeeklyPlan | null> {
+    return this.model.findOne({
+      user: userId.toObjectID(),
+    });
+  }
 }
 
 class WeeklyPlanTranslator implements MongoDbTranslator<WeeklyPlan, WeeklyPlanSnapshot> {

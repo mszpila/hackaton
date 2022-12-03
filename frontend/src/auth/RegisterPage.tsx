@@ -13,10 +13,11 @@ const RegisterPage: FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  const validateForm = async () => {
+  const validateForm = async (e: any) => {
+    e.preventDefault();
     const registerData = await singup(email, password, firstName, lastName);
 
-    if (registerData) {
+    if (registerData.token) {
       localStorage.setItem('x-token', registerData.token);
       localStorage.setItem('user', registerData.user);
 
@@ -79,8 +80,8 @@ const RegisterPage: FC = () => {
 
 
       <Form.Item>
-        <Button style={ LoginButtonStyle } onClick={ validateForm } type='primary'>Register</Button>
-        <Button style={ LoginButtonStyle } onClick={ navigateToLogin } type='primary'>Login</Button>
+        <Button style={ LoginButtonStyle } onClick={ (e) => validateForm(e) } type='primary'>Register</Button>
+        <Button style={ LoginButtonStyle } onClick={ navigateToLogin }>Login</Button>
       </Form.Item>
     </Form>
   </>;

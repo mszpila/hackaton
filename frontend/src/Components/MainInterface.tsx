@@ -6,14 +6,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './MainInterface.css';
 import { Button, Checkbox, Col, Collapse, DatePicker, Form, Input, InputNumber, List, message, Modal, Row, Space, TimePicker, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TypeEvents } from '../App';
 import { ApplicationRoutePaths } from '../ApplicationRoutes';
 import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from '../auth/styles/LoginFormStyle';
 import dayjs, { Dayjs } from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
-import { generateWeeklyPlan, getShoppingList, getWeeklyPlan, IShoppingListItem, IWeeklyPlan } from './api/WeeklyPlanAPI';
+import { generateWeeklyPlan, getCurrentWeeklyPlan, getShoppingList, getWeeklyPlan, IShoppingListItem, IWeeklyPlan } from './api/WeeklyPlanAPI';
 
 dayjs.extend(weekday);
 
@@ -32,6 +32,23 @@ const MainInterface: FC = () => {
     setOpen(true);
   };
 
+  const fetchData = async (token: string) => {
+    const currentWeeklyPlan = await getCurrentWeeklyPlan(token!);
+
+    if (currentWeeklyPlan) {
+      const weeklyPlan = await getWeeklyPlan(token!, currentWeeklyPlan.id);
+      setWeeklyPlan(weeklyPlan);
+    }
+  };
+
+  useEffect(() => {
+    if (!token) {
+      return navigate(ApplicationRoutePaths.LOGIN);
+    }
+
+    fetchData(token);
+  }, []);
+
   // const handleOk = () => {
   //   setModalText('The modal will be closed after two seconds');
   //   setConfirmLoading(true);
@@ -45,12 +62,6 @@ const MainInterface: FC = () => {
     console.log('Clicked cancel button');
     setOpen(false);
   };
-
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate(ApplicationRoutePaths.LOGIN);
-  //   }
-  // }, []);
 
   const [mealsNumber, setMealsNumber] = useState(0);
   const setMealAmountOnChange = (e: any) => {

@@ -5,6 +5,7 @@ import { TokenService } from '../../iam/domain/token/TokenService';
 import { DateValue } from '../../shared';
 import { RecipeDietRestriction, RecipeIntolerance, RecipeName } from '../domain/weeklyPlan/Recipe';
 import { ShoppingListItem, WeeklyPlan, WeeklyPlanCookTimes, WeeklyPlanDays, WeeklyPlanID, WeeklyPlanPeopleNumber } from '../domain/weeklyPlan/WeeklyPlan';
+import { WeeklyPlanRepository } from '../domain/weeklyPlan/WeeklyPlanRepository';
 import { WeeklyPlanService } from '../domain/weeklyPlan/WeeklyPlanService';
 import { IRecipe } from '../domain/weeklyPlan/WeeklyPlanSnapshot';
 
@@ -69,6 +70,7 @@ export class WeeklyPlanApplicationService {
   constructor(
     private readonly tokenService: TokenService,
     private readonly weeklyPlanService: WeeklyPlanService,
+    private readonly weeklyPlanRepository: WeeklyPlanRepository,
   ) {
   }
 
@@ -112,6 +114,16 @@ export class WeeklyPlanApplicationService {
     const weeklyPlan = await this.weeklyPlanService.getWeeklyPlan(new WeeklyPlanID(command.weeklyPlan), user.id);
 
     return weeklyPlan.getShoppingList();
+  }
+
+  public async checkCurrentWeeklyPlan(command: TokenCommand): Promise<IGeneratedWeeklyPlanID | null> {
+    const user = await this.tokenService.getUser(new TokenID(command.token), null);
+
+    const weeklyPlan = await this.weeklyPlanRepository.getCurrent(user.id);
+
+    if (!weeklyPlan) return null;
+
+    return { id: weeklyPlan.id.toString() };
   }
 }
 

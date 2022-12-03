@@ -15,7 +15,7 @@ export enum ApplicationRoutePaths {
 const applicationRoutes = [
   { path: ApplicationRoutePaths.LOGIN, element: <LoginPage />, private: false },
   { path: ApplicationRoutePaths.REGISTER, element: <RegisterPage />, private: false },
-  { path: ApplicationRoutePaths.HEALTH, element: <Health />, private: true },
+  // { path: ApplicationRoutePaths.HEALTH, element: <Health />, private: true },
   { path: '/*', element: <MainInterface />, private: true },
 ];
 

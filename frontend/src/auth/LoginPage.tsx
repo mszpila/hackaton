@@ -12,10 +12,11 @@ const LoginPage: FC = () => {
   const [email, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const validateForm = async () => {
+  const validateForm = async (e: any) => {
+    e.preventDefault();
     const loginData = await login(email, password);
 
-    if (loginData) {
+    if (loginData.token) {
       localStorage.setItem('x-token', loginData.token);
       localStorage.setItem('user', loginData.user);
 
@@ -61,8 +62,8 @@ const LoginPage: FC = () => {
       {/*</Form.Item>*/ }
 
       <Form.Item>
-        <Button style={ LoginButtonStyle } onClick={ validateForm } type='primary'>Login</Button>
-        <Button style={ LoginButtonStyle } onClick={ navigateToRegister } type='primary'>Register</Button>
+        <Button style={ LoginButtonStyle } onClick={ (e) => validateForm(e) } type='primary'>Login</Button>
+        <Button style={ LoginButtonStyle } onClick={ navigateToRegister }>Register</Button>
       </Form.Item>
     </Form>
   </>;

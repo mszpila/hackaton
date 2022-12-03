@@ -68,3 +68,9 @@ export const getWeeklyPlan = (token: string, weeklyPlanId: string) =>
     .url(`/${ weeklyPlanId }`)
     .get()
     .json<IWeeklyPlan>();
+
+export const getCurrentWeeklyPlan = (token: string) =>
+  apiClient(token)
+    .url('')
+    .get()
+    .json<IGeneratedWeeklyPlanID | null>();
