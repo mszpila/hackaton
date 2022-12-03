@@ -3,6 +3,7 @@ import { Button, Form, Input } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApplicationRoutes, { ApplicationRoutePaths } from '../ApplicationRoutes';
 import { login } from './api/AuthAPI';
 import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from './styles/LoginFormStyle';
 
@@ -28,6 +29,10 @@ const LoginPage: FC = () => {
 
   const onChangeSetPassword = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setPassword(e.target.value);
+  };
+
+  const navigateToRegister = () => {
+    navigate(ApplicationRoutePaths.REGISTER);
   };
 
   return <>
@@ -57,6 +62,7 @@ const LoginPage: FC = () => {
 
       <Form.Item>
         <Button style={ LoginButtonStyle } onClick={ validateForm } type='primary'>Login</Button>
+        <Button style={ LoginButtonStyle } onClick={ navigateToRegister } type='primary'>Register</Button>
       </Form.Item>
     </Form>
   </>;

@@ -2,6 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ApplicationRoutePaths } from '../ApplicationRoutes';
 import { login, singup } from './api/AuthAPI';
 import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from './styles/LoginFormStyle';
 
@@ -37,6 +38,10 @@ const RegisterPage: FC = () => {
 
   const onChangeSetLastName = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setLastName(e.target.value);
+  };
+
+  const navigateToLogin = () => {
+    navigate(ApplicationRoutePaths.LOGIN);
   };
 
   return <>
@@ -75,6 +80,7 @@ const RegisterPage: FC = () => {
 
       <Form.Item>
         <Button style={ LoginButtonStyle } onClick={ validateForm } type='primary'>Register</Button>
+        <Button style={ LoginButtonStyle } onClick={ navigateToLogin } type='primary'>Login</Button>
       </Form.Item>
     </Form>
   </>;
