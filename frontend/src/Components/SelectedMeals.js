@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
+import CachedIcon from '@mui/icons-material/Cached';
 
-function SelectedMeals( {filters, numberOfCooking}) {
-    const [changeMeal1, setChangeMeal1] = useState(false)
-    const [changeMeal2, setChangeMeal2] = useState(false)
+function SelectedMeals( {filters, numberTypesMeals}) {
+    
+    
     useEffect(() => {
       
-    }, [changeMeal1])
+    }, [meal])
     
 
     let meal = fetch('').then(response => response.JSON)
