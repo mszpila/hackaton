@@ -5,9 +5,9 @@ import Header from '../Components/Header';
 
 
 const MainLayout: FC<{ children: ReactNode }> = ({ children }) => (
-  <Layout>
-    <Header />
-    <Content>
+  <Layout style={ { height: '100%' } }>
+    {/*<Header />*/ }
+    <Content style={ { height: '100%' } }>
       { children }
     </Content>
   </Layout>

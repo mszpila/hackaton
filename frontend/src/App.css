@@ -1,9 +1,14 @@
-* {
-    /* margin: 0; */
-    /* padding: 0; */
-    /* box-sizing: border-box; */
-    /* reset */
+html {
+    height: 100%;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*reset*/
+}
+
 .App {
     background-color: #F3F6F9;
     
