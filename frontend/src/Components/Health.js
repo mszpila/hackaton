@@ -1,13 +1,6 @@
 import './Health.css'
-import ZOptions from './ZOptions';
 
-import ZQuestion from './ZQuestion';
-import React, {useState} from 'react';
-import {Button} from 'antd'
-import MealPrep from './MealPrep';
-//import { findByLabelText } from '@testing-library/react';
-import SelectedMeals from './SelectedMeals';
-
+import ZHeader from './ZHeader';
 
 function Health() {
   const [filters, setFilters] = useState({ veganSelected: false, glutenFreeSelected: false, lactoseSelected: false });
@@ -49,7 +42,7 @@ function Health() {
             }
             
             
-
+            <ZMeals/>
          </div>
      );
 }

@@ -17,7 +17,6 @@ export interface TypeEvents {
 function App() {
 
   const [selectedView, setSelectedView] = useState('MainInterface');
-
   return (
     <BrowserRouter>
       <div className='App'>
