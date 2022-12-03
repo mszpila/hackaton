@@ -28,7 +28,7 @@ export const swapRecipe = (token: string, weeklyPlanId: string, body: ISwapBody)
     .post(body)
     .res();
 
-interface IShoppingListItem {
+export interface IShoppingListItem {
   name: string;
   amount: number;
   unit: string;
@@ -63,9 +63,8 @@ export interface IWeeklyPlan {
   peopleNumber: number;
 }
 
-export const getWeeklyPlan = (token: string, weeklyPlanId: string) => {
+export const getWeeklyPlan = (token: string, weeklyPlanId: string) =>
   apiClient(token)
     .url(`/${ weeklyPlanId }`)
     .get()
     .json<IWeeklyPlan>();
-};

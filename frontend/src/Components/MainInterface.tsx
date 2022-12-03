@@ -4,35 +4,42 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './MainInterface.css';
-import { Button, Checkbox, Col, DatePicker, Form, Input, List, Modal, Row, Space, Typography } from 'antd';
-
-import { FC, useState } from 'react';
-
+import { Button, Checkbox, Col, Collapse, DatePicker, Form, Input, InputNumber, List, message, Modal, Row, Space, TimePicker, Typography } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TypeEvents } from '../App';
 import { ApplicationRoutePaths } from '../ApplicationRoutes';
 import { LoginButtonStyle, LoginFormStyle, LoginInputStyle } from '../auth/styles/LoginFormStyle';
+import dayjs, { Dayjs } from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import { generateWeeklyPlan, getShoppingList, getWeeklyPlan, IShoppingListItem, IWeeklyPlan } from './api/WeeklyPlanAPI';
+
+dayjs.extend(weekday);
 
 const MainInterface: FC = () => {
+
   const navigate = useNavigate();
   const [token] = useState(localStorage.getItem('token'));
+  const [weeklyPlan, setWeeklyPlan] = useState<IWeeklyPlan | null>(null);
+  const [shoppingList, setShoppingList] = useState<IShoppingListItem[]>([]);
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
+  // const [modalText, setModalText] = useState('Content of the modal');
 
   const showModal = () => {
     setOpen(true);
   };
 
-  const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
+  // const handleOk = () => {
+  //   setModalText('The modal will be closed after two seconds');
+  //   setConfirmLoading(true);
+  //   setTimeout(() => {
+  //     setOpen(false);
+  //     setConfirmLoading(false);
+  //   }, 2000);
+  // };
 
   const handleCancel = () => {
     console.log('Clicked cancel button');
@@ -45,13 +52,76 @@ const MainInterface: FC = () => {
   //   }
   // }, []);
 
-  const [events, setEvents] = useState<TypeEvents[]>([
-    { title: 'event 1', start: '2022-12-02T10:00:00', end: '2022-12-02T12:00:00' },
-    { title: 'event 2', date: '2022-12-02' },
-  ]);
+  const [mealsNumber, setMealsNumber] = useState(0);
+  const setMealAmountOnChange = (e: any) => {
+    setMealsNumber(e);
+  };
 
-  const { RangePicker } = DatePicker;
-  const weekFormat = 'MM/DD';
+  const [peopleNumber, setPeopleNumber] = useState(0);
+  const setPeopleNumberOnChange = (e: any) => {
+    setPeopleNumber(e);
+  };
+
+  const [vegan, setVegan] = useState(false);
+  const setVeganOnChange = (e: CheckboxChangeEvent) => {
+    setVegan(e.target.checked);
+  };
+
+  const [vegetarian, setVegetarian] = useState(false);
+  const setVegetarianOnChange = (e: CheckboxChangeEvent) => {
+    setVegetarian(e.target.checked);
+  };
+
+  const [ketogenic, setKetogenic] = useState(false);
+  const setKetogenicOnChange = (e: CheckboxChangeEvent) => {
+    setKetogenic(e.target.checked);
+  };
+
+  const [dairyFree, setDairyFree] = useState(false);
+  const setDairyFreeOnChange = (e: CheckboxChangeEvent) => {
+    setDairyFree(e.target.checked);
+  };
+
+  const [glutenFree, setGlutenFree] = useState(false);
+  const setGlutenFreeOnChange = (e: CheckboxChangeEvent) => {
+    setGlutenFree(e.target.checked);
+  };
+
+  const [dates, setDates] = useState<string[]>([]);
+
+  const addDate = (time: Dayjs, dayOfTheWeek: number): void => {
+    // if (time.toDate().getTime() < dayjs().toDate().getTime()) {
+    //   message.error('Cannot use passed date');
+    // }
+
+    setDates(prevState => [...prevState, time.day(dayOfTheWeek).toISOString()]);
+    console.log(dates);
+  };
+
+  const generateMeals = async () => {
+    const diets: string[] = [];
+    if (vegan) diets.push('VEGAN');
+    if (vegetarian) diets.push('VEGETARIAN');
+    if (ketogenic) diets.push('KETOGENIC');
+
+    const intolerances: string[] = [];
+    if (dairyFree) diets.push('DAIRY_FREE');
+    if (glutenFree) diets.push('GLUTEN_FREE');
+
+    const generatedWeeklyPlan = await generateWeeklyPlan(token!, {
+      dates,
+      mealsNumber,
+      peopleNumber,
+      diets,
+      intolerances,
+    });
+
+    const weeklyPlan = await getWeeklyPlan(token!, generatedWeeklyPlan.id);
+    setWeeklyPlan(weeklyPlan);
+
+    const shoppingList = await getShoppingList(token!, weeklyPlan.id);
+    setShoppingList(shoppingList);
+  };
 
   return (
     <Row style={ { height: '100%' } }>
@@ -61,28 +131,30 @@ const MainInterface: FC = () => {
             height={ '100%' }
             plugins={ [dayGridPlugin, timeGridPlugin, interactionPlugin] }
             initialView='timeGridWeek'
-            events={ events }
+            events={ weeklyPlan ? weeklyPlan.recipes : [] }
             // headerToolbar={ { center: 'timeGridWeek' } }
           />
         </div>
       </Col>
       <Col span={ 6 }>
-        { [].length ? <List
+        { shoppingList.length ? <List
           header={ <div>Shopping list</div> }
           // footer={<div>Footer</div>}
           bordered
-          dataSource={ [] }
+          dataSource={ shoppingList }
           renderItem={ (item) => (
             <List.Item>
-              <Typography.Text mark>[ITEM]</Typography.Text> { item }
+              <>
+                <Typography.Text mark>{ item.name } { item.amount } { item.unit }</Typography.Text>
+              </>
             </List.Item>
           ) }
         /> : <>
           <Button type='primary' onClick={ showModal }>Add meals</Button>
           <Modal
-            title='Title'
+            title='Generate meals'
             open={ open }
-            onOk={ handleOk }
+            // onOk={ handleOk }
             confirmLoading={ confirmLoading }
             onCancel={ handleCancel }
           >
@@ -95,47 +167,46 @@ const MainInterface: FC = () => {
               style={ LoginFormStyle }
             >
               <Typography.Text>How many meals do you want to generate?</Typography.Text>
-              <Form.Item style={ LoginInputStyle } name='cook'
-                         rules={ [{ required: true, message: 'Input amount of cook' }] }>
-                <Input placeholder='Cook amount' />
-              </Form.Item>
+              <InputNumber min={ 1 } max={ 14 } onChange={ setMealAmountOnChange } />
 
               <Typography.Text>How many servings?</Typography.Text>
-              <Form.Item style={ LoginInputStyle } name='servings'
-                         rules={ [{ required: true, message: 'Input amount of servings' }] }>
-                <Input placeholder='Servings amount' />
-              </Form.Item>
+              <InputNumber min={ 1 } max={ 4 } />
 
               <Typography.Text>Diet restrictions</Typography.Text>
-              <Checkbox>Vegan</Checkbox>
-              <Checkbox>Vegetarian</Checkbox>
-              <Checkbox>Ketogenic</Checkbox>
+              <Checkbox onChange={ setVeganOnChange }>Vegan</Checkbox>
+              <Checkbox onChange={ setVegetarianOnChange }>Vegetarian</Checkbox>
+              <Checkbox onChange={ setKetogenicOnChange }>Ketogenic</Checkbox>
 
               <Typography.Text>Intolerances</Typography.Text>
-              <Checkbox>Diary free</Checkbox>
-              <Checkbox>Gluten free</Checkbox>
+              <Checkbox onChange={ setDairyFreeOnChange }>Diary free</Checkbox>
+              <Checkbox onChange={ setGlutenFreeOnChange }>Gluten free</Checkbox>
 
-              <Space direction='vertical' size={ 12 }>
-                <RangePicker
-                  // defaultValue={[dayjs('2015/01/01', dateFormat), dayjs('2015/01/01', dateFormat)]}
-                  format={ weekFormat }
-
-                />
-              </Space>
-
-
-              {/*<Form.Item style={ LoginInputStyle } name='password'*/ }
-              {/*           rules={ [{ required: true, message: 'Please input password' }] }>*/ }
-              {/*  <Input onChange={ onChangeSetPassword } prefix={ <LockOutlined className='site-form-item-icon' /> }*/ }
-              {/*         type='password' placeholder='Password' />*/ }
-              {/*</Form.Item>*/ }
-
-              {/*<Form.Item style={ LoginOptionsStyle }>*/ }
-              {/*  <Checkbox checked onChange={ onChangeSetRemember }>Remember me</Checkbox>*/ }
-              {/*</Form.Item>*/ }
+              <Collapse>
+                <Collapse.Panel header='Monday' key='1'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 1) } />
+                </Collapse.Panel>
+                <Collapse.Panel header='Tuesday' key='2'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 2) } />
+                </Collapse.Panel>
+                <Collapse.Panel header='Wednesday' key='3'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 3) } />
+                </Collapse.Panel>
+                <Collapse.Panel header='Thursday' key='4'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 4) } />
+                </Collapse.Panel>
+                <Collapse.Panel header='Friday' key='5'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 5) } />
+                </Collapse.Panel>
+                <Collapse.Panel header='Saturday' key='6'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 6) } />
+                </Collapse.Panel>
+                <Collapse.Panel header='Sunday' key='7'>
+                  <TimePicker onChange={ (time) => time && addDate(time, 0) } />
+                </Collapse.Panel>
+              </Collapse>
 
               <Form.Item>
-                <Button style={ LoginButtonStyle } type='primary'>Generate meals</Button>
+                <Button style={ LoginButtonStyle } type='primary' onClick={ generateMeals }>Generate meals</Button>
               </Form.Item>
             </Form>
           </Modal>
