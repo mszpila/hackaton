@@ -16,7 +16,7 @@ const MainInterface:FC<IMainInterface> = ( { events }) => {
         <div id="main-interface">
             <FullCalendar
                 plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-                initialView= "dayGridMonth"
+                initialView= "timeGridWeek"
                 events={events}
                 headerToolbar={{
                 center: 'dayGridMonth,timeGridWeek',
