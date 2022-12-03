@@ -1,6 +1,6 @@
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Button, Checkbox, Col, Collapse, Divider, Form, InputNumber, List, Modal, Row, Space, TimePicker, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -149,7 +149,7 @@ const MainInterface: FC = () => {
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView='timeGridWeek'
             events={weeklyPlan ? weeklyPlan.recipes : []}
-          // headerToolbar={ { center: 'timeGridWeek' } }
+            // headerToolbar={ { center: 'timeGridWeek' } }
           />
         </div>
       </Col>
