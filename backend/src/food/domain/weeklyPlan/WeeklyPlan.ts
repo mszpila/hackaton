@@ -134,7 +134,7 @@ export class WeeklyPlan extends Entity<WeeklyPlanID, WeeklyPlanSnapshot> {
       const { name, amount, unit } = item;
       shoppingItems.push({
         name,
-        amount: this.calculateAmount(amount),
+        amount,
         unit,
       });
     }
@@ -158,6 +158,6 @@ export class WeeklyPlan extends Entity<WeeklyPlanID, WeeklyPlanSnapshot> {
   }
 
   private calculateAmount(aggregatedAmount: number): number {
-    return (aggregatedAmount * this.peopleNumber.getNumberOfPeople() * 14) / this.cookTimes.getCookTimes();
+    return aggregatedAmount * this.peopleNumber.getNumberOfPeople() * this.cookTimes.getCookTimes();
   }
 }

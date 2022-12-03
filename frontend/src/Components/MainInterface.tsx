@@ -23,11 +23,15 @@ const MainInterface: FC = () => {
   const [shoppingList, setShoppingList] = useState<IShoppingListItem[]>([]);
 
   const [open, setOpen] = useState(false);
+  const [popUpOpen, setPopUpOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   // const [modalText, setModalText] = useState('Content of the modal');
 
   const showModal = () => {
     setOpen(true);
+  };
+  const showPopUp = () => {
+    setPopUpOpen(true);
   };
 
   const fetchData = async (token: string) => {
@@ -67,6 +71,10 @@ const MainInterface: FC = () => {
   const handleCancel = () => {
     console.log('Clicked cancel button');
     setOpen(false);
+  };
+
+  const handlePopUpCancel = () => {
+    setPopUpOpen(false);
   };
 
   const [mealsNumber, setMealsNumber] = useState(0);
@@ -148,7 +156,8 @@ const MainInterface: FC = () => {
             height={'100%'}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView='timeGridWeek'
-            events={weeklyPlan ? weeklyPlan.recipes : []}
+            events={ weeklyPlan ? weeklyPlan.recipes : [] }
+            editable={ true }
             // headerToolbar={ { center: 'timeGridWeek' } }
           />
         </div>
@@ -167,13 +176,20 @@ const MainInterface: FC = () => {
             </List.Item>
           )}
         /> : <>
-          <Button type='primary' onClick={showModal}>Add meals</Button>
+          <Button type='primary' onClick={ showModal }>Add meals</Button>
+          <Modal
+            title='recipie'
+            open={ popUpOpen }
+            onCancel={ handlePopUpCancel }>
+            Sow Recipe here
+          </Modal>
+
           <Modal
             title='Generate meals'
-            open={open}
+            open={ open }
             // onOk={ handleOk }
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
+            confirmLoading={ confirmLoading }
+            onCancel={ handleCancel }
           >
             <Form
               name='normal_login'
