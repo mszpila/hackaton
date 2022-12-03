@@ -54,6 +54,7 @@ function Health( {setEvents} ) {
                     }
                 <div id="change" onClick={() => setMealsSelected(!mealsSelected)}>Change <ChevronRightIcon/></div>
                 </div>
+                
                 <MealPrep />
             </>
 
