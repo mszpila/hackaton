@@ -33,6 +33,8 @@
     "bcryptjs": "^2.4.3",
     "mongoose": "^6.7.4",
     "nestjs-bunyan": "^3.0.0",
+    "node-fetch": "^3.3.0",
+    "node-fetch-commonjs": "^3.2.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",

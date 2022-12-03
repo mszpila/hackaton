@@ -1,9 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import wretch from 'wretch';
 import { DateValue } from '../../../shared';
 import { FoodService } from '../../domain/FoodService';
 import { Recipe, RecipeDietRestriction, RecipeIngredient, RecipeIntolerance, RecipeName } from '../../domain/weeklyPlan/Recipe';
 import { WeeklyPlanCookTimes, WeeklyPlanDays } from '../../domain/weeklyPlan/WeeklyPlan';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fetch = require('node-fetch-commonjs');
 
 interface IExtendedIngredients {
   name: string;
@@ -24,17 +25,18 @@ interface ISpoonacularRecipe {
 
 @Injectable()
 export class SpoonacularFoodService implements FoodService {
-  private readonly endpoint = 'https://api.spoonacular.com';
+  private readonly endpoint = 'https://api.spoonacular.com/recipes/random';
   private readonly token = process.env.SPOONACULAR_TOKEN;
 
   constructor() {
+
     if (!this.token) {
       throw new InternalServerErrorException('SpoonacularFoodService token is undefined');
     }
   }
 
   public async getRandomRecipes(diets: RecipeDietRestriction[], intolerances: RecipeIntolerance[], amount: WeeklyPlanCookTimes, dates: WeeklyPlanDays): Promise<Recipe[]> {
-    const plainRecipes = await this.get<ISpoonacularRecipe[]>(`tags=main%20course,${ diets.length ? diets.map(diet => diet.toString()) : null },${ intolerances.length ? intolerances.map(intolerance => intolerance.toString()) : null }&limitLicense=true&number=${ amount }`);
+    const plainRecipes = await this.get<ISpoonacularRecipe[]>(`tags=main%20course,${ diets.length ? diets.map(diet => diet.toString()) : null },${ intolerances.length ? intolerances.map(intolerance => intolerance.toString()) : null }&limitLicense=true&number=${ amount.getCookTimes() }`);
     const dateValues = dates.getDates();
 
     return plainRecipes.map(recipe => {
@@ -66,10 +68,14 @@ export class SpoonacularFoodService implements FoodService {
   }
 
   private async get<T>(query: string): Promise<T> {
-    return wretch()
-      .headers({ 'x-api-key': this.token! })
-      .url(`${ this.endpoint }?${ query }`)
-      .get()
-      .json<T>();
+    const response = await fetch(`${ this.endpoint }?${ query }`, {
+      method: 'get',
+      headers: {
+        'x-api-key': this.token!,
+      },
+    });
+
+    const data = await response.json();
+    return data.recipes as T;
   }
 }
