@@ -23,7 +23,7 @@ function Health() {
         !mealsSelected ?
                 <>
                 <div id="zheader">
-                <h2>Shop Once a week !</h2>
+                    <h2>Shop Once a week !</h2>
                 <br></br>
             </div>
             <div id="input-questions">
@@ -54,6 +54,7 @@ function Health() {
                     }
                 <div id="change" onClick={() => setMealsSelected(!mealsSelected)}>Change <ChevronRightIcon/></div>
                 </div>
+
                 <MealPrep />
             </>
 
