@@ -203,7 +203,7 @@ const MainInterface: FC = () => {
               <InputNumber min={1} max={14} onChange={setMealAmountOnChange} />
 
               <Typography.Text className='larger_text'>How many servings?</Typography.Text>
-              <InputNumber min={1} max={4} />
+              <InputNumber min={ 1 } max={ 4 } onChange={ setPeopleNumberOnChange } />
 
               <Typography.Text className='larger_text'>Diet restrictions</Typography.Text>
               <Space split={<Divider type="horizontal" />}>
